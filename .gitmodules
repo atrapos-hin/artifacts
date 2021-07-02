@@ -1,0 +1,5 @@
+[submodule "ext_libs/GeneralizedSuffixTree"]
+	path = ext_libs/GeneralizedSuffixTree
+	url = https://github.com/vergoulis/GeSuTr.git
+	branch = otree_constraints
+

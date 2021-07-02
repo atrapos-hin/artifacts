@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+CMakeLists.txt
+cmake-build-debug/
+data/constraints.txt
+*.o
+run
+
+data/
+vldb_experiments/competitors/results/
+vldb_experiments/dense-sparse/results/
+vldb_experiments/neo4j/results/
+vldb_experiments/competitors/resultsDBLP/
