@@ -23,7 +23,7 @@ do
 		do
 			#echo -e "log: ${logname}\n"
 
-			log="../../workloads/SCHOLARLY_HIN/CACHE_SIZE/${logname}.csv"
+			log="./workloads/SCHOLARLY_HIN/CACHE_SIZE/${logname}.csv"
 
 			for csize in "${cache_size[@]}"
 			do
