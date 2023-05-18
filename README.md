@@ -38,7 +38,7 @@ id	name    surname
 
 ##### Example Input Files
 
-All methods use the same format of input files. You can download sample data for the DBLP from <a href="http://andrea.imsi.athenarc.gr/atrapos_sample_data.tar.gz" target="_blank">here</a>; you have to extract the data into the `./data` folder.
+All methods use the same format of input files. You can download sample data for the DBLP from <a href="http://andrea.imsi.athenarc.gr/atrapos_sample_data.tar.gz" download>here</a>; you have to extract the data into the `./data` folder.
 
 
 #### Clone & Build
