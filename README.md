@@ -1,4 +1,13 @@
-### Metapath-Based Pattern Mining in HINs
+### ATRAPOS: Metapath-Based Pattern Mining in HINs
+
+> More details about BIP! Finder can be found in our publication:
+> 
+> S. Chatzopoulos, T. Vergoulis, D. Skoutas, T. Dalamagas, C. Tryfonopoulos, P. Karras. Atrapos: Real-time Evaluation of Metapath Query Workloads. The Web Conference (WWW), 2023
+>
+> -- We kindly ask that any published research that makes use of our work cites the paper above.
+
+
+ 
 
 Many mining algorithms in HINs have a common computationally intensive step, that consists of finding the pairs of nodes connected given a particular metapath. This repository provides open-source implementations of the `Sequential` and `Dynamic Programming` matrix multiplication strategies proposed in [1] for this problem. 
 As data scientists usually submit multiple metapath queries, we further propose the `OTree` algorithm that exploits metapath overlaps to eliminate redundant computations.
@@ -29,18 +38,20 @@ id	name    surname
 
 ##### Example Input Files
 
-All methods use the same format of input files. Examples of input files can be found in the `./data/` folder. Three sample datasets are included: (a) a synthetic dataset in the folder `./data/synthetic_data/`, (b) a sparse sample of the DBLP dataset from AMiner (folder `./data/DBLP_sample_sparse/`) and (c) a denser sample from the same DBLP dataset (folder `./DBLP_sample_dense/`).
-
+All methods use the same format of input files. You can download sample data for the DBLP from [here](http://andrea.imsi.athenarc.gr/atrapos_sample_data.tar.gz); you have to extract the data into the `./data` folder.
 
 
 #### Clone & Build
 
 ```
 # clone repository
-git clone --recursive https://github.com/atrapos-hin/artifacts.git
+git clone https://github.com/atrapos-hin/artifacts.git
 
-# update submodules
-git submodule update --remote
+# navigate into the cloned folder
+cd artifacts
+
+# execute the following script from the root directory
+bash setup.sh
 
 # build project
 make
@@ -51,7 +62,7 @@ make
 All the algorithms can be executed with the following command: 
 
 ```
-./run -qf <query_file> -indir <input_node_directory> -idir <input_relations_directory> -c <constraints_file> -algo <algorithm> -ad <adaptive_mode> -mem <max_memory> -out <output_directory> -exp <otree_expand_type>
+./run -qf [query_file] -indir [nodes_input_dir] -idir [relation_input_dir] -algo [algorithm] -ad [adaptive] -mem [max_mem_in_adaptive_mode] -exp [expansion_strategy] -dopt [heuristic_of_dynamic_programming] -cache [cache_size] -cachep [cache_policy]
 ```
 
 Parameters are explained in the table below:
@@ -61,22 +72,18 @@ Parameters are explained in the table below:
 | -qf |  the query file that contains all metapaths to be executed, each in a new line |
 | -indir |    the directory that contains the input files for node attributes    |
 | -idir | teh directory that contains the input files for node relations |
-| -c | a file containing possible constraints for certian node types |
-| -algo | the algorithm to be used; choose one of `Seq, DynP, OTree` |
-| -ad | enable disk-based matrix multiplication, values: 0 or 1 |
-| -mem | max memory to be used when the adapative (disk-based) matrix multiplcation is enabled |
-| -out | the output directory |
-| -exp | expansion strategy used in the OTree algorithm when trying to expand a previsously cached result. This parameter can be set to: `DynP`, `Seq`, `Exp` or `ExpSparse` |
-| -dopt | heustistic to be used for Dynamic Programming matrix multiplication. This parameter can be set to: `Dense`, `Sparse`, `MNC` |
+| -algo | the algorithm to be used; choose one of: <ul><li>`Seq` for HRank (see [1]) using sequential matrix multiplication</li><li>`DynP` for HRank (see [1]) using the dynamic programming optimisation</li><li>`Baseline1` for CBS1 (caches only the result)</li><li>`CBS2` for CBS2 (caches final and intermediate results)</li><li>`OTree` for ATRAPOS (see [2])</li></ul></ul> |
+| -ad | enable disk-based matrix multiplication, values: `0` (note that `1` is in experimental condition) |
+| -mem | max memory to be used when the adapative (disk-based) matrix multiplcation is enabled, i.e, `-ad 1` is given |
+| -exp | expansion strategy used in the OTree algorithm when trying to expand a previsously cached result. This parameter can be set to: `DynP` (also `Seq`, `Exp` and `ExpSparse` are in experimental condition) |
+| -dopt | heustistic to be used for Dynamic Programming matrix multiplication. This parameter can be set to: `Dense`, `Sparse`, ( also `MNC` in experimental condition) |
 | -cache | cache size given in MB |
+| -cachep | the cache policy to be used; one of: <ul><li>`LRU` for the Least Recently Used</li><li>`GDS` for the GreedyDual-Size</li><li>`PGDSU` for the custom Popularity-aware GreedyDual-Size used in [2]</li></ul> |
 
-
-An example execution command can be the following: 
-```
-./run -qf data/synthetic_data/queries.txt -indir data/synthetic_data/nodes/ -idir data/synthetic_data/relations_dense/ -c data/constraints.txt -algo OTree -ad 0 -mem 3000 -out data/out/ -exp DynP -dopt Sparse -cache 1024
-```
-
-It executes the `OTree` algorithm with the `DynP` expansion strategy for the metapath queries in the file specified by the `-qf` flag and with the synthetic nodes and dense relations.  
+You can use the `example.sh` script to execute a sample query workload for DBLP. 
+It writes all output results under the `./results` folder and logs the overall time for each run in `./results/overall.csv`
 
 #### References
 [1] Y. P. S. W. B. Shi Chuan, Li Yitong. Constrained-meta-path-based rankingin heterogeneous information network. Knowledge and Information Systems, 2016
+
+[2] S. Chatzopoulos, T. Vergoulis, D. Skoutas, T. Dalamagas, C. Tryfonopoulos, P. Karras. Atrapos: Real-time Evaluation of Metapath Query Workloads. The Web Conference (WWW), 2023
