@@ -1,6 +1,6 @@
 ### ATRAPOS: Metapath-Based Pattern Mining in HINs
 
-> More details about BIP! Finder can be found in our publication:
+> More details about our work can be found in our publication:
 > 
 > S. Chatzopoulos, T. Vergoulis, D. Skoutas, T. Dalamagas, C. Tryfonopoulos, P. Karras. Atrapos: Real-time Evaluation of Metapath Query Workloads. The Web Conference (WWW), 2023
 >
